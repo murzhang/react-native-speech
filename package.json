@@ -1,0 +1,54 @@
+{
+  "_from": "native-speech",
+  "_id": "native-speech@0.1.0",
+  "_inBundle": false,
+  "_integrity": "sha1-Dq0M94RrtL/4JumIg6o/H1Y1lQY=",
+  "_location": "/native-speech",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "native-speech",
+    "name": "native-speech",
+    "escapedName": "native-speech",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "http://registry.npm.taobao.org/native-speech/download/native-speech-0.1.0.tgz",
+  "_shasum": "0ead0cf7846bb4bff826e98883aa3f1f56359506",
+  "_spec": "native-speech",
+  "_where": "d:\\shenmoinfo\\SourceCode\\XuetangApp",
+  "author": {
+    "name": "somonus"
+  },
+  "bugs": {
+    "url": "https://github.com/somonus/react-native-speech/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "Text to speech for react-native",
+  "homepage": "https://github.com/somonus/react-native-speech#readme",
+  "keywords": [
+    "tts",
+    "text",
+    "to",
+    "speech",
+    "react-native"
+  ],
+  "license": "MIT",
+  "main": "src/index.js",
+  "name": "native-speech",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/somonus/react-native-speech.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "0.1.0"
+}
