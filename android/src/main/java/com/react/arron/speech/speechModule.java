@@ -123,11 +123,7 @@ public class speechModule extends ReactContextBaseJavaModule {
     public String getName() {
         return "SpeechModule";
     }
-    @ReactMethod
-    public boolean isSpeaking() {
-        return tts!=null && tts.isSpeaking();
-    }
-
+	
     @ReactMethod
     public void speak(final ReadableMap args, final Callback callback) {
         new GuardedAsyncTask<Void, Void>(getReactApplicationContext()) {
