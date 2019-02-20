@@ -18,8 +18,11 @@ const Speech = {
   stop() {
     SpeechModule.stop();
   },
-  isSpeaking() {
-    return SpeechModule.isSpeaking();
+  isSpeaking(callback) {
+    if (!callback) {
+      callback = function callback(argument) { }
+    }
+    SpeechModule.isSpeaking(callback);
   }
 }
 
