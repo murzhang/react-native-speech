@@ -26,7 +26,7 @@ import java.util.Set;
 public class speechModule extends ReactContextBaseJavaModule {
 
     private static TextToSpeech tts;
-
+    private static Boolean tts_isvalid=false;
     public speechModule(ReactApplicationContext reactContext) {
         super(reactContext);
         init();
@@ -68,7 +68,7 @@ public class speechModule extends ReactContextBaseJavaModule {
             @Override
             protected void doInBackgroundGuarded(Void... params) {
                 try {
-                    if (tts.isSpeaking()) {
+                    if (tts!=null && tts.isSpeaking()) {
                         callback.invoke(null, true);
                     } else {
                         callback.invoke(null, false);
@@ -85,7 +85,11 @@ public class speechModule extends ReactContextBaseJavaModule {
             @Override
             public void onInit(int status) {
                 if (status == TextToSpeech.ERROR) {
+                    tts_isvalid=false;
                     FLog.e(ReactConstants.TAG, "Not able to initialized the TTS object");
+                }
+                else{
+                    tts_isvalid=true;
                 }
             }
         });
@@ -96,7 +100,13 @@ public class speechModule extends ReactContextBaseJavaModule {
         new GuardedAsyncTask<Void, Void>(getReactApplicationContext()) {
             @Override
             protected void doInBackgroundGuarded(Void... params) {
-                tts.stop();
+               if(tts!=null) {
+                   tts.stop();
+                   tts.shutdown();
+               }
+                tts=null;
+                tts_isvalid=false;
+                init();
             }
         }.execute();
     }
@@ -129,7 +139,7 @@ public class speechModule extends ReactContextBaseJavaModule {
         new GuardedAsyncTask<Void, Void>(getReactApplicationContext()) {
             @Override
             protected void doInBackgroundGuarded(Void... params) {
-                if (tts == null) {
+                if (tts == null||tts_isvalid==false) {
                     init();
                 }
                 String text = args.hasKey("text") ? args.getString("text") : null;
