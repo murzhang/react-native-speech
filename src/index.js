@@ -46,7 +46,7 @@ const Speech = {
                 options.rate = 30.0;
             }
             */
-           // YSModule 规则0~100
+            // YSModule 规则0~100
             if (options.rate == 0.25) {
                 options.rate = 15.0;
             }
@@ -74,6 +74,18 @@ const Speech = {
         }
         else {
             NativeModules.YSTTS.speak(options, callback);
+        }
+    },
+    init(callback) {
+        if (!callback) {
+            callback = function callback(argument) {
+            }
+        }
+        if (Platform.OS === "ios") {
+            //ios不需要初始化
+        }
+        else {
+            NativeModules.YSTTS.init(callback);
         }
     },
     stop() {
