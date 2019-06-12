@@ -17,9 +17,36 @@ const Speech = {
         }
         let platformStandRate = 1.0;
         if (Platform.OS === 'ios') {
+            /*
             platformStandRate = 0.5;
             options.rate = options.rate || 1.0;
             options.rate = options.rate * platformStandRate;//换算为平台标准语速
+            */
+            /* SpeechModule 规则*/
+            if (options.rate == 0.25) {
+                options.rate = 0.35;
+            }
+            else if (options.rate == 0.5) {
+                options.rate = 0.4;
+            }
+            else if (options.rate == 0.75) {
+                options.rate = 0.45;
+            }
+            else if (options.rate == 1.0) {
+                options.rate = 0.5;
+            }
+            else if (options.rate == 1.25) {
+                options.rate = 0.55;
+            }
+            else if (options.rate == 1.5) {
+                options.rate = 0.58;
+            }
+            else if (options.rate == 1.75) {
+                options.rate = 0.65;
+            }
+            else{
+                options.rate=0.5;
+            }
         }
         else {
             options.rate = options.rate || 1.0;
@@ -66,7 +93,7 @@ const Speech = {
                 options.rate = 85.0;
             }
             else if (options.rate == 1.75) {
-                options.rate = 95.0;
+                options.rate = 99.0;
             }
         }
         if (Platform.OS === "ios") {
@@ -74,18 +101,6 @@ const Speech = {
         }
         else {
             NativeModules.YSTTS.speak(options, callback);
-        }
-    },
-    init(callback) {
-        if (!callback) {
-            callback = function callback(argument) {
-            }
-        }
-        if (Platform.OS === "ios") {
-            //ios不需要初始化
-        }
-        else {
-            NativeModules.YSTTS.init(callback);
         }
     },
     stop() {
