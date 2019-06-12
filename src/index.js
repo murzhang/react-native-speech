@@ -93,7 +93,7 @@ const Speech = {
                 options.rate = 85.0;
             }
             else if (options.rate == 1.75) {
-                options.rate = 99.0;
+                options.rate = 95.0;
             }
         }
         if (Platform.OS === "ios") {
@@ -101,6 +101,18 @@ const Speech = {
         }
         else {
             NativeModules.YSTTS.speak(options, callback);
+        }
+    },
+    init(callback) {
+        if (!callback) {
+            callback = function callback(argument) {
+            }
+        }
+        if (Platform.OS === "ios") {
+            //ios不需要初始化
+        }
+        else {
+            NativeModules.YSTTS.init(callback);
         }
     },
     stop() {
