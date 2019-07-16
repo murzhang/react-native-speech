@@ -20,7 +20,11 @@ RCT_EXPORT_METHOD(speak:(NSDictionary *)args callback:(RCTResponseSenderBlock)ca
 {
     // Error if self.synthesizer was already initialized
     if (self.synthesizer) {
-        return callback(@[RCTMakeError(@"There is a speech in progress.  Use the `paused` method to know if it's paused.", nil, nil)]);
+        [self.synthesizer stopSpeakingAtBoundary:AVSpeechBoundaryImmediate];
+        //fixed 中途播报停止时释放资源
+        self.synthesizer = nil;
+        
+        //return callback(@[RCTMakeError(@"There is a speech in progress.  Use the `paused` method to know if it's paused.", nil, nil)]);
     }
     
     // Set args to variables
