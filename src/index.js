@@ -74,26 +74,26 @@ const Speech = {
             }
             */
             // YSModule 规则0~100
-            if (options.rate == 0.25) {
-                options.rate = 15.0;
+            if (options.rate == 0.25) {//最慢
+                options.rate = 0.0;
             }
-            else if (options.rate == 0.5) {
+            else if (options.rate == 0.5) {//较慢
                 options.rate = 25.0;
             }
             else if (options.rate == 0.75) {
                 options.rate = 35.0;
             }
-            else if (options.rate == 1.0) {
+            else if (options.rate == 1.0) {//标准
                 options.rate = 50.0;
             }
             else if (options.rate == 1.25) {
-                options.rate = 75.0;
+                options.rate = 65.0;
             }
-            else if (options.rate == 1.5) {
-                options.rate = 85.0;
+            else if (options.rate == 1.5) {//较快
+                options.rate = 80.0;
             }
-            else if (options.rate == 1.75) {
-                options.rate = 95.0;
+            else if (options.rate == 1.75) {//最快
+                options.rate = 100.0;
             }
         }
         if (Platform.OS === "ios") {
