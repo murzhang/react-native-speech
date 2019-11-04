@@ -16,5 +16,8 @@
 
 @property (nonatomic, strong) AVSpeechSynthesizer *synthesizer;
 
+@property (nonatomic, strong) AVSpeechUtterance *utterance;
+
+@property bool isSpeaking;
 @end
 
