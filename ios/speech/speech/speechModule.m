@@ -19,14 +19,14 @@ RCT_EXPORT_MODULE(SpeechModule)
 RCT_EXPORT_METHOD(speak:(NSDictionary *)args callback:(RCTResponseSenderBlock)callback)
 {
     // Error if self.synthesizer was already initialized
-    if (self.synthesizer) {
+    if (self.isSpeaking) {
         [self.synthesizer stopSpeakingAtBoundary:AVSpeechBoundaryImmediate];
         //fixed 中途播报停止时释放资源
-        self.synthesizer = nil;
-        
+        //self.synthesizer = nil;
         //return callback(@[RCTMakeError(@"There is a speech in progress.  Use the `paused` method to know if it's paused.", nil, nil)]);
     }
-    
+
+    self.isSpeaking=false;
     // Set args to variables
     NSString *text = args[@"text"];
     NSString *lang = args[@"language"] ? args[@"language"] : @"zh-CH";
@@ -37,19 +37,23 @@ RCT_EXPORT_METHOD(speak:(NSDictionary *)args callback:(RCTResponseSenderBlock)ca
         RCTLogError(@"[Speech] You must specify a text to speak.");
         return;
     }
-    
-    // Setup utterance and voice
-    AVSpeechUtterance *utterance = [[AVSpeechUtterance alloc] initWithString:text];
-    
+    if (self.utterance) {
+       self.utterance=[self.utterance initWithString:text];
+    }
+    else{
+        // Setup utterance and voice
+        self.utterance = [[AVSpeechUtterance alloc] initWithString:text];
+    }
+    AVSpeechUtterance *utterance=self.utterance;
     utterance.voice = [AVSpeechSynthesisVoice voiceWithLanguage:lang];
     
     if (rate) {
         utterance.rate = [rate doubleValue];
     }
-    
-    self.synthesizer = [[AVSpeechSynthesizer alloc] init];
-    self.synthesizer.delegate = self;
-    
+    if(!self.synthesizer){
+        self.synthesizer = [[AVSpeechSynthesizer alloc] init];
+        self.synthesizer.delegate = self;
+    }
     // Speak
     [self.synthesizer speakUtterance:utterance];
     
@@ -59,10 +63,12 @@ RCT_EXPORT_METHOD(speak:(NSDictionary *)args callback:(RCTResponseSenderBlock)ca
 // Stops synthesizer
 RCT_EXPORT_METHOD(stop)
 {
-    if (self.synthesizer) {
+    if (self.isSpeaking) {
         [self.synthesizer stopSpeakingAtBoundary:AVSpeechBoundaryImmediate];
-        //fixed release 
-        self.synthesizer = nil;
+        
+        self.isSpeaking=false;
+        //fixed 中途播报停止时释放资源
+        //self.synthesizer = nil;
     }
 }
 
@@ -116,7 +122,7 @@ RCT_EXPORT_METHOD(speechVoices:(RCTResponseSenderBlock)callback)
 // Finished Handler
 -(void)speechSynthesizer:(AVSpeechSynthesizer *)synthesizer didFinishSpeechUtterance:(AVSpeechUtterance *)utterance
 {
-    self.synthesizer = nil;
+    self.isSpeaking = false;
     _callback(@[@true]);
 }
 
