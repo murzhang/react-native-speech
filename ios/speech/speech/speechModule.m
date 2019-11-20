@@ -19,7 +19,7 @@ RCT_EXPORT_MODULE(SpeechModule)
 RCT_EXPORT_METHOD(speak:(NSDictionary *)args callback:(RCTResponseSenderBlock)callback)
 {
     // Error if self.synthesizer was already initialized
-    if (self.isSpeaking) {
+    if (true||self.isSpeaking) {
         [self.synthesizer stopSpeakingAtBoundary:AVSpeechBoundaryImmediate];
         //fixed 中途播报停止时释放资源
         //self.synthesizer = nil;
@@ -63,7 +63,7 @@ RCT_EXPORT_METHOD(speak:(NSDictionary *)args callback:(RCTResponseSenderBlock)ca
 // Stops synthesizer
 RCT_EXPORT_METHOD(stop)
 {
-    if (self.isSpeaking) {
+    if (true||self.isSpeaking) {
         [self.synthesizer stopSpeakingAtBoundary:AVSpeechBoundaryImmediate];
         
         self.isSpeaking=false;
