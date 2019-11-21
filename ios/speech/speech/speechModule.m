@@ -19,7 +19,7 @@ RCT_EXPORT_MODULE(SpeechModule)
 RCT_EXPORT_METHOD(speak:(NSDictionary *)args callback:(RCTResponseSenderBlock)callback)
 {
     // Error if self.synthesizer was already initialized
-    if (true||self.isSpeaking) {
+    if (self.isSpeaking) {
         [self.synthesizer stopSpeakingAtBoundary:AVSpeechBoundaryImmediate];
         //fixed 中途播报停止时释放资源
         //self.synthesizer = nil;
@@ -50,20 +50,18 @@ RCT_EXPORT_METHOD(speak:(NSDictionary *)args callback:(RCTResponseSenderBlock)ca
     if (rate) {
         utterance.rate = [rate doubleValue];
     }
-    if(!self.synthesizer){
-        self.synthesizer = [[AVSpeechSynthesizer alloc] init];
-        self.synthesizer.delegate = self;
-    }
+   
     // Speak
     [self.synthesizer speakUtterance:utterance];
     
+    self.isSpeaking=true;
     _callback = callback;
 }
 
 // Stops synthesizer
 RCT_EXPORT_METHOD(stop)
 {
-    if (true||self.isSpeaking) {
+    if (self.isSpeaking) {
         [self.synthesizer stopSpeakingAtBoundary:AVSpeechBoundaryImmediate];
         
         self.isSpeaking=false;
@@ -101,7 +99,12 @@ RCT_EXPORT_METHOD(isPaused:(RCTResponseSenderBlock)callback)
 // Returns true if synthesizer is speaking
 RCT_EXPORT_METHOD(isSpeaking:(RCTResponseSenderBlock)callback)
 {
-    if (self.synthesizer.speaking) {
+    if (self.isSpeaking||!self.isInited) {//未初始化时，外部等待
+        if(!self.isInited && !self.synthesizer){
+            self.synthesizer = [[AVSpeechSynthesizer alloc] init];
+            self.synthesizer.delegate = self;
+            self.isInited=true;//初始化成功
+        }
         callback(@[@true]);
     } else {
         callback(@[@false]);
